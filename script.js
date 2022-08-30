@@ -8,7 +8,12 @@ var isLowerCase = true;
 var isNumeric = true;
 var isSpecialChar = true;
 var passwordLength = 0;
-
+const text1 = "How many characters would you like your password to contain?";
+const text2 = "Please choose a length of at least 8 characters and no more than 128 characters.";
+const text3 = "Click ok to confirm including lowercase characters."
+const text4 = "Click ok to confirm including uppercase characters."
+const text5 = "Click ok to confirm including special characters."
+const text6 = "Click ok to confirm including numeric values."
 
 
 // Get references to the #generate element
@@ -27,6 +32,17 @@ function writePassword() {
 function generatePassword() {
 
   getPasswordLength(); 
+
+  // Verify if the user wants to cancel the process of generating a password
+  if (passwordLength === 0) {
+    var isCancel = window.confirm("Are you sure you want to cancel?")
+    if (isCancel){
+      window.alert("No password will be generated at this time.")
+      return password = "";
+    } else {
+      getPasswordLength();
+    }
+  }
   
   chooseCharTypes();
 
@@ -77,14 +93,18 @@ function generatePassword() {
 function getPasswordLength() {
   
   // prompt for the length of password
-  var pLength = window.prompt("How many characters would you like your password to contain? Please choose a number or characters between 8 and 128.");
+  var pLength = window.prompt(text1 + " " + text2);
 
   // Validate user input
   if (pLength >= 8 && pLength <= 128) {   
     passwordLength = parseInt(pLength, 10);  
   } else {
-    window.alert("Invalid number. Please choose a number of characters between 8 and 128.");
-    getPasswordLength();
+    if (pLength === null) {
+      passwordLength = 0;
+    } else {
+      window.alert("Invalid number. " + text2);
+      getPasswordLength();
+    }
   }
 
 }
@@ -92,16 +112,16 @@ function getPasswordLength() {
 // Get the character types to use in your password. At least one character type must be selected
 function chooseCharTypes() {
 
-  isLowerCase = window.confirm("Do you want to include lowercase letters?");
+  isLowerCase = window.confirm(text3); 
 
-  isUpperCase = window.confirm("Do you want to include uppercase letters?");
+  isUpperCase = window.confirm(text4);
 
-  isNumeric = window.confirm("Do you want to include numbers?");
+  isSpecialChar = window.confirm(text5);
 
-  isSpecialChar = window.confirm("Do you want to include special characters?");
+  isNumeric = window.confirm(text6);
 
   if (!isLowerCase && !isUpperCase && !isNumeric && !isSpecialChar) {
-    window.alert("Must choose at least one character type");
+    window.alert("Must choose at least one character type.");
     chooseCharTypes();
   } 
 
